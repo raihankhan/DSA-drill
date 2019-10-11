@@ -7,25 +7,29 @@
 ///...................................*****.................................................///
 
 /*....................................Values................................................*/
-#define       inf                  1<<30
 #define       p5                   100007
 #define       p6                   1000007
 #define       PI                   acos(-1)
 #define       M                    1000000007
-
+#define       inf                  1LL << 62
+#define       white                0
+#define       gray                 1
+#define       black                2
 /*....................................Functions.............................................*/
 #define       sqr(x)               x*x
 #define       sc                   scanf
 #define       pf                   printf
+#define       pfn                  printf("\n")
 #define       scin(x)              sc("%d",&(x))
-#define       scin2(x,y)            sc("d",&(x),&(y))
-#define       scin3(x,y,z)          sc("d%d",&(x),&(y),&(z))
+#define       scin2(xx,zz)         scanf("%d %d",&xx,&zz)
 #define       scln(x)              sc("%lld",&(x))
+#define       scln2(xx,zz)         scanf("%lld %lld",&xx,&zz)
 #define       min3(a,b,c)          min(a,min(b,c))
 #define       max3(a,b,c)          max(a,max(b,c))
 #define       all(v)               v.begin(), v.end()
 #define       ok                   cout << "ok" << endl
 #define       mem(x,y)             memset(x,y,sizeof(x))
+#define       clr(a)               a.clear()
 #define       READ(f)              freopen(f, "r", stdin)
 #define       WRITE(f)             freopen(f, "w", stdout)
 
@@ -46,14 +50,15 @@
 
 #define       pb                   push_back
 #define       mp                   make_pair
-#define       ss                   stringstream
+#define       ff                   first
+#define       ss                   second
 
 /*.....................................Loops...............................................*/
 #define       rep( i , a , b )     for( i=a ; i<b ; i++)
 #define       rev( i , a , b )     for( i=a ; i>=b ; i--)
 #define       repx( i ,a,b, x)     for( i=a ; i<b ; i+=x)
 
-#define       FastRead             ios_base::sync_with_stdio(0);cin.tie(0)
+#define       IOS             ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 
 
 //int month[]={31,28,31,30,31,30,31,31,30,31,30,31};
@@ -62,117 +67,106 @@
 {
     if(x==0) return y;
     return gcd(y%x,x);
-}*/
+}
+lli bigmod(lli n, lli k)
+{
+    lli ans=1;
+    while(k)
+    {
+        if(k&1)
+            ans=(ans*n)%M;
+        k=k>>1;
+        n=(n*n)%M;
+    }
+
+    return ans;
+}
+*/
 /*
-int dx[5] = {1, -1, 0, 0 };
-int dy[5] = {0, 0, 1, -1};
+int dx4[5] = {1, -1, 0, 0 };
+int dy4[5] = {0, 0, 1, -1};
+int dx8[9] = { 0 , 0 , -1 , 1 , -1 , -1 , 1 , 1 } ;
+int dy8[9] = { -1 , 1 , 0 , 0 , -1 , 1 , -1 , 1 } ;
+
+int knightx[9] = { -1 , 1 , -2 , 2 , -2 , 2 , -1 , 1 } ;
+int knighty[9] = { -2 , -2 , -1 , -1 , 1 , 1 , 2 , 2 } ;
+
+bool valid( int r , int c , int x , int y ){ if( x >= 1 && x <= r && y >= 1 && y <= c ) return 1 ; return 0 ; }
 */
 
 using namespace std;
-int tree[4*p5];
+int tree1[4*p5];
+int tree2[4*p5];
 int arr[p5];
-
-void build(int v, int tl, int tr)
+void build( int v , int tl , int tr)
 {
-    if(tl==tr)
-        tree[v]=arr[tl];
-    else
-    {
-        int tm= (tl+tr)/2;
-        build( 2*v, tl, tm);
-        build( 2*v +1, tm+1, tr);
+    if(tl>tr) return;
+    if(tl==tr) { tree1[v]=arr[tl]; tree2[v]=arr[tl]; return; }
 
-        tree[v]=min(tree[2*v] , tree[2*v+1] );
-    }
+        int tm=(tl+tr)/2;
+        build( 2*v , tl , tm);
+        build( 2*v+1 , tm+1 , tr);
+        tree1[v]=min(tree1[2*v] , tree1[2*v+1]);
+        tree2[v]=max(tree2[2*v] , tree2[2*v+1]);
 }
 
-int RMQ(int v, int tl, int tr, int l, int r)
+int rmnq(int v, int tl,int tr , int l , int r )
 {
-    if( l > tr or r < tl ) return 0; // out of range
+   if(tl>r or tr<l) return p6;
 
-    if( l <= tl and r>=tr ) return tree[v]; // complete overlap
+    else if(tl>=l and tr<=r) return tree1[v];
 
-    int tm=(tl+tr)/2;
+    int tm=(tl+tr)>>1;
 
-    int left_ans = RMQ(2*v, tl, tm, l, r);              // for partial overlap
-    int right_ans = RMQ(2*v+1, tm+1, tr, l, r);
-
-    return min(left_ans , right_ans) ;
-
+    int lft=rmnq(2*v , tl , tm , l , r);
+    int rgt=rmnq(2*v+1 , tm+1 , tr , l , r);
+   // cout << min(lft,rgt) << endl;
+    return min(lft,rgt);
 }
 
-void update_node(int v, int tl, int tr, int val, int pos)
+int rmxq(int v, int tl,int tr , int l , int r )
 {
-    if(pos < tl or pos > tr) return;
+    if(tl>r or tr<l) return -p6;
 
-    if(tl==tr and tl==pos)       // update the value
-    {
-        arr[pos]=val;  // original array update
-        tree[v]=val;
-        return;
-    }
+    else if(tl>=l and tr<=r) return tree2[v];
 
-    int tm=(tl+tr)/2;
+    int tm=(tl+tr)>>1;
 
-    if(pos <= tm)
-        update_node(2*v, tl, tm, val, pos);
-    else
-        update_node(2*v+1, tm+1, tr, val, pos);
+    int lft=rmxq(2*v , tl , tm , l , r);
+    int rgt=rmxq(2*v+1 , tm+1 , tr , l , r);
 
-    tree[v]= min(tree[2*v] ,tree[2*v+1] );  // update whole segment tree
-    return;
+    return max(lft,rgt);
 }
 
-void update_range(int v,int tl, int tr, int l, int r,int inc)
-{
-    if(tr<tl or tl > r or tr < l ) return;
-
-    if(tl==tr)     // update leaves
-    {
-        tree[v]+=inc;
-        return;
-    }
-
-    int tm=(tl+tr)/2;
-    update_range(2*v, tl, tm, l, r, inc);
-    update_range(2*v+1, tm+1, tr, l, r, inc);
-
-    tree[v]= min(tree[v*2] , tree[2*v+1]);
-    return;
-}
 int main()
 {
-    int n,t,q,i,l,r;
-
+    int t,n,d,p,i,j,k,a,b;
     scin(t);
-
-    while(t--)
+    rep(i , 1 , t+1)
     {
-        scin(n);
-        scin(q);
+        scin2(n,d);
+        rep(j , 0 , n) scin(arr[j]);
 
-        rep(i, 0, n) scin(arr[i]);
+        mem(tree1,0);
+        mem(tree2,0);
 
-        build( 1, 0, n-1);
+        build( 1 , 0 , n-1);
 
-        while(q--)
+
+        p=0;
+        rep(j , 0 , n-d+1)
         {
-            scin(l);
-            scin(r);
-
-            int sum = RMQ( 1, 0, n-1, l, r);    // Range sum query
-            cout << sum << endl;
+            a=j,b=a+d-1;
+            p=max(p , rmxq(1 , 0 , n-1 , a , b)-rmnq(1 , 0 , n-1 , a , b) );
+          //  cout << a<< " - " << b << "|" << rmxq(1 , 0 , n-1 , a , b) << " " << rmnq(1 , 0 , n-1 , a , b) << endl;
         }
-        int inc=2;
-        update_node(1, 0, n-1, 2, 5);
-        update_range(1, 0, n-1, 1, 3, inc);
-
+        pf("Case %d: %d\n",i,p);
     }
+
 
 #ifdef HOME
     cerr << "Time elapsed: " << clock() / 1000 << " ms" << endl;
 #endif
     return 0;
 }
-
 
