@@ -1,2 +1,2 @@
 # DATA-STRUCTURE-ALGORITHMS :sunglasses:
-## customised for competetive programming :heart:
+## customized for competitive programming :heart:
