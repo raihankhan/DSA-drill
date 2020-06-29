@@ -67,7 +67,6 @@
 int dx[5] = {1, -1, 0, 0 };
 int dy[5] = {0, 0, 1, -1};
 */
-
 using namespace std;
 int LargestAreaRectangle(veci &v)
 {
@@ -106,12 +105,7 @@ int main()
         scin(p);
         v.pb(p);
     }
-
-
     cout << LargestAreaRectangle(v) << endl;
-
-
-
 
 #ifdef HOME
     cerr << "Time elapsed: " << clock() / 1000 << " ms" << endl;
