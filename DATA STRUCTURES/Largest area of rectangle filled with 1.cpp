@@ -123,10 +123,6 @@ int main()
 
     cout << maxi << endl;
 
-
-
-
-
 #ifdef HOME
     cerr << "Time elapsed: " << clock() / 1000 << " ms" << endl;
 #endif
