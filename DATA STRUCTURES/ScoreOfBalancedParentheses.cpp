@@ -35,3 +35,4 @@ int main()
     cin >> s;
     cout << cal_score(s) << endl;
 }
+
