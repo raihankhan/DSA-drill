@@ -1,3 +1,4 @@
+//https://codeforces.com/problemset/problem/20/C
 #include<bits/stdc++.h>
 ///...................................*****.................................................///
 ///        Author :  Raihan Khan Raka  ( raihankhanraka@gmail.com )                         ///
@@ -7,7 +8,6 @@
 ///...................................*****.................................................///
 
 /*....................................Values................................................*/
-#define       inf                  1<<30
 #define       p5                   100007
 #define       p6                   1000007
 #define       PI                   acos(-1)
@@ -19,15 +19,17 @@
 #define       sqr(x)               x*x
 #define       sc                   scanf
 #define       pf                   printf
+#define       pfn                  printf("\n")
 #define       scin(x)              sc("%d",&(x))
-#define       scin2(x,y)            sc("d",&(x),&(y))
-#define       scin3(x,y,z)          sc("d%d",&(x),&(y),&(z))
+#define       scin2(xx,zz)         scanf("%d %d",&xx,&zz)
 #define       scln(x)              sc("%lld",&(x))
-#define       min3(a,b,c)          min(a,min(b,c))
-#define       max3(a,b,c)          max(a,max(b,c))
+#define       scln2(xx,zz)         scanf("%lld %lld",&xx,&zz)
+#define       min3(a,b,c)          min(a,b<c?b:c)
+#define       max3(a,b,c)          max(a,b>c?b:c)
 #define       all(v)               v.begin(), v.end()
 #define       ok                   cout << "ok" << endl
 #define       mem(x,y)             memset(x,y,sizeof(x))
+#define       clr(a)               a.clear()
 #define       READ(f)              freopen(f, "r", stdin)
 #define       WRITE(f)             freopen(f, "w", stdout)
 
@@ -48,24 +50,31 @@
 
 #define       pb                   push_back
 #define       mp                   make_pair
-#define       ss                   stringstream
+#define       ff                   first
+#define       ss                   second
 
 /*.....................................Loops...............................................*/
 #define       rep( i , a , b )     for( i=a ; i<b ; i++)
 #define       rev( i , a , b )     for( i=a ; i>=b ; i--)
 #define       repx( i ,a,b, x)     for( i=a ; i<b ; i+=x)
-
-#define       IOS             ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-
-
+#define       test(t)              int t; scin(t); while(t--)
+#define       doshomik(x)          fixed << setprecision(x)
+#define       IOS                  ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define error(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
 //int month[]={31,28,31,30,31,30,31,31,30,31,30,31};
-//long power(long int x, long int y){ int temp; if( y == 0) return 1; temp = power(x, y/2); if (y%2 == 0) return temp*temp; else return x*temp*temp; }
-/*lli gcd(lli x,lli y)
+
+///------------------------------- Mudular functions----------------------------------------
+/*
+inline lli power(lli x, lli y){ lli temp; if( y == 0) return 1; temp = power(x, y/2); if (y%2 == 0) return temp*temp; else return x*temp*temp; }
+inline lli add(lli a, lli b) {a += b; return a >= M ? a - M : a;}
+inline lli sub(lli a, lli b) {a -= b; return a < 0 ? a + M : a;}
+inline lli mul(lli a, lli b) {return  (a * b) % M;}
+lli gcd(lli x,lli y)
 {
     if(x==0) return y;
     return gcd(y%x,x);
 }
-lli bigmod(lli n, lli k)
+lli bigmod(lli n, lli k )
 {
     lli ans=1;
     while(k)
@@ -79,31 +88,87 @@ lli bigmod(lli n, lli k)
     return ans;
 }
 */
+///----------------------------------Graph moves----------------------------------------
 /*
-int dx4[5] = {1, -1, 0, 0 };
-int dy4[5] = {0, 0, 1, -1};
-int dx8[9] = { 0 , 0 , -1 , 1 , -1 , -1 , 1 , 1 } ;
-int dy8[9] = { -1 , 1 , 0 , 0 , -1 , 1 , -1 , 1 } ;
-
-int knightx[9] = { -1 , 1 , -2 , 2 , -2 , 2 , -1 , 1 } ;
-int knighty[9] = { -2 , -2 , -1 , -1 , 1 , 1 , 2 , 2 } ;
-
+int dx4[5] = {1, -1, 0,  0};
+int dy4[5] = {0,  0, 1, -1};
+int dx8[9] = {0,  0, 1, -1, -1, 1, -1,  1};
+int dy8[9] = {-1, 1, 0,  0,  1, 1, -1, -1};
+int knightx[9] = {-2, -2, -1, -1,  1, 1, 2,  2};
+int knighty[9] = {-1,  1, -2,  2, -2, 2, -1, 1};
 bool valid( int r , int c , int x , int y ){ if( x >= 1 && x <= r && y >= 1 && y <= c ) return 1 ; return 0 ; }
 */
 
 using namespace std;
 
-veci g[p5],cost[p5];
-bool visited[p5];
-int par[p5],dis[p5],n,e;
+void err(istream_iterator<string> it) { cerr << endl; }
+template<typename T, typename... Args>
+void err(istream_iterator<string> it, T a, Args... args) { cerr  << "[ " << *it << " = " << a << " ] " ; err(++it, args...);  }
+///...............................Code Starts Here........................................
+int n,m;
+vector< pair<int,int> > g[p5];
+int parent[p5];
+bool found;
+void print_path(int u)
+{
+    if(u==1)
+    {
+        pf("1 ");
+        return;
+    }
+
+    print_path(parent[u]);
+
+    pf("%d ",u);
+}
+void dijkstra(int u)
+{
+    priority_queue< pair<int,int> > q;
+    lli inf=1e12;
+    vector<lli>dis(n+1,inf);
+    vector<bool>vis(n+1,0);
+
+    dis[u]=0;
+    q.push({dis[u],u});
+    int d,w;
+
+    while(!q.empty())
+    {
+        u=q.top().second;
+        q.pop();
+
+        if(vis[u]) continue;
+        vis[u]=1;
+
+        for(auto v:g[u])
+        {
+            if(dis[u]+v.second<dis[v.first])
+            {
+                dis[v.first]=dis[u]+v.second;             //v.first=node , v.second=weight
+                q.push({-dis[v.first],v.first});
+                parent[v.first]=u;
+            }
+        }
+    }
+
+    if(dis[n]==inf) pf("-1");
+    else print_path(n);
+
+    pfn;
+}
 
 int main()
 {
+    int u,v,w;
+    scanf("%d %d",&n,&m);
+    while(m--)
+    {
+        scanf("%d %d %d",&u,&v,&w);
+        g[u].pb({v,w});
+        g[v].pb({u,w});
+    }
 
+    dijkstra(1);
 
-#ifdef HOME
-    cerr << "Time elapsed: " << clock() / 1000 << " ms" << endl;
-#endif
     return 0;
 }
-
