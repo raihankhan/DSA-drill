@@ -1,16 +1,16 @@
-##Graph/Tree Diameters
+## Graph/Tree Diameters
 
-##Binary Lifting
+## Binary Lifting
 
-##Tree Flattening with Euler tours
+## Tree Flattening with Euler tours
 
 
-###Problem Link:
+### Problem Link:
 
 
 https://codeforces.com/gym/102694
 
-###Resources:
+### Resources:
 
 
 https://www.youtube.com/watch?v=MOy4UDjN8DM 
