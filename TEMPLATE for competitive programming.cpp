@@ -22,6 +22,7 @@
 #define       pfn                  printf("\n")
 #define       scin(x)              sc("%d",&(x))
 #define       scin2(xx,zz)         scanf("%d %d",&xx,&zz)
+#define       scin3(xx,yy,zz)      scanf("%d %d %d",&xx,&yy,&zz)
 #define       scln(x)              sc("%lld",&(x))
 #define       scln2(xx,zz)         scanf("%lld %lld",&xx,&zz)
 #define       min3(a,b,c)          min(a,b<c?b:c)
@@ -52,12 +53,12 @@
 #define       mp                   make_pair
 #define       ff                   first
 #define       ss                   second
-
+#define       lc(x)                (x<<1)
+#define       rc(x)                ((x<<1)|1)
 /*.....................................Loops...............................................*/
 #define       rep( i , a , b )     for( i=a ; i<b ; i++)
 #define       rev( i , a , b )     for( i=a ; i>=b ; i--)
 #define       repx( i ,a,b, x)     for( i=a ; i<b ; i+=x)
-#define       test(t)              int t; scin(t); while(t--)
 #define       doshomik(x)          fixed << setprecision(x)
 #define       IOS                  ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define error(args...) { string _s = #args; replace(_s.begin(), _s.end(), ',', ' '); stringstream _ss(_s); istream_iterator<string> _it(_ss); err(_it, args); }
@@ -101,18 +102,20 @@ bool valid( int r , int c , int x , int y ){ if( x >= 1 && x <= r && y >= 1 && y
 
 using namespace std;
 
-void err(istream_iterator<string> it) { cerr<<endl; }
+void err(istream_iterator<string> it) { cerr << endl; }
 template<typename T, typename... Args>
-void err(istream_iterator<string> it, T a, Args... args) { cerr  << *it << " = " << a << "  |  " ; err(++it, args...);  }
+void err(istream_iterator<string> it, T a, Args... args) { cerr  << "[ " << *it << " = " << a << " ] " ; err(++it, args...);  }
 ///...............................Code Starts Here........................................
 
+void test(int T)
+{
+    
+
+}
+void Test() {   int T;  T=1;  for(int cs=1;cs<=T;cs++)    test(cs); }
 int main()
 {
-
-
-#ifdef HOME
-    cerr << "Time elapsed: " << clock() / 1000 << " ms" << endl;
-#endif
+    Test();
     return 0;
 }
 
