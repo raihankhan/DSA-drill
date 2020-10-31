@@ -1,6 +1,7 @@
+//https://leetcode.com/problems/subarray-sum-equals-k
 #include<bits/stdc++.h>
 using namespace std;
-//https://leetcode.com/problems/subarray-sum-equals-k
+
 int solve(vector<int>& A, int B)
 {
 
