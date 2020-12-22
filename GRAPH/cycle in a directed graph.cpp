@@ -95,6 +95,26 @@ using namespace std;
 veci g[p5];
 int visited[p5],cycle;
 
+/*
+veci g[p5];
+int color[p5];
+
+bool has_cycle(int u)
+{
+    color[u]=gray;
+    for(auto v:g[u])
+    {
+        if(color[v]==white and has_cycle(v)==true)
+        return true;
+        else if(color[v]==gray )
+            return true;
+    }
+
+    color[u]=black;
+    return false;
+}
+*/
+
 void dfs(int u)
 {
     if(visited[u]==black or cycle)
@@ -146,4 +166,6 @@ int main()
 #endif
     return 0;
 }
+
+
 
